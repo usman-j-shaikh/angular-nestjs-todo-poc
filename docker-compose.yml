@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  client:
+    image: poc/todo-webapp:${TAG:-latest}
+    container_name: todo-app
+    build:
+      context: ./
+      dockerfile: ./client/Dockerfile
+    working_dir: /usr/local/app
+    ports:
+      - 4200:4200
+    volumes:
+      - ./client/:/usr/local/app
+      - webapp_node_modules:/usr/local/app/node_modules
+      - webapp_dist:/usr/local/app/dist
+  server:
+    image: poc/tod-server:${TAG:-latest}
+    container_name: todo-server
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    ports:
+      - 3001:3001
+      - 9229:9229
+    networks:
+      - nesjs-network
+    volumes:
+      - .:/usr/local/server
+      - /usr/local/server/node_modules
+    restart: unless-stopped
+volumes:
+  webapp_node_modules:
+  webapp_dist:
+networks:
+  nesjs-network:
+
+

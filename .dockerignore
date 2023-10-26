@@ -1,0 +1,9 @@
+# Generated files
+# node_modules/
+# client/
+
+# VCS files
+.git/
+
+# Other files
+README.md
